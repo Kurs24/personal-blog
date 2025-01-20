@@ -1,0 +1,4 @@
+package com.farhan.blog.entities;
+
+public class Post {
+}
