@@ -1,58 +1,57 @@
 package com.farhan.blog.service;
 
 import com.farhan.blog.entity.Post;
-import lombok.Getter;
+import com.farhan.blog.repository.PostRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.time.Instant;
 
 @Service
+@RequiredArgsConstructor
 public class PostService {
 
-    Post post1 = new Post(1, "slug1", "title1");
-    Post post2 = new Post(2, "slug2", "title2");
-    @Getter
-    List<Post> posts = new ArrayList<>(Arrays.asList(post1, post2));
+    private final PostRepository postRepository;
+
+    public Iterable<Post> getPosts() {
+        return postRepository.findAll();
+    }
 
     public Post getPostBySlug(String slug) {
-        return posts.stream().filter(p -> p.getSlug().equals(slug)).findFirst().orElse(null);
+        return postRepository.findBySlug(slug).orElse(null);
     }
 
     public Post createPost(Post post) {
-        posts.add(post);
-        return post;
+        post.setCreatedAt(Instant.now().getEpochSecond());
+        return postRepository.save(post);
     }
 
-    public boolean updatePost(Integer id, String title, String slug) {
-        Post targetPost = posts.stream().filter(p -> p.getId().equals(id)).findFirst().orElse(null);
+    public boolean updatePost(String slug, Post updatedPostByUser) {
+        Post targetPost = postRepository.findBySlug(slug).orElse(null);
         if (targetPost == null) {
             return false;
         }
-
-        targetPost.setTitle(title);
-        targetPost.setSlug(slug);
+        updatedPostByUser.setId(targetPost.getId());
+        postRepository.save(updatedPostByUser);
         return true;
     }
 
     public boolean deletePost(Integer id) {
-        Post targetPost = posts.stream().filter(p -> p.getId().equals(id)).findFirst().orElse(null);
+        Post targetPost = postRepository.findById(id).orElse(null);
         if (targetPost == null) {
             return false;
         }
-
-        posts.remove(targetPost);
+        postRepository.deleteById(targetPost.getId());
         return true;
     }
 
-    public boolean publishPost(Integer id) {
-        Post targetPost = posts.stream().filter(p -> p.getId().equals(id)).findFirst().orElse(null);
+    public Post publishPost(Integer id) {
+        Post targetPost = postRepository.findById(id).orElse(null);
         if (targetPost == null) {
-            return false;
+            return null;
         }
-
+        targetPost.setPublishedAt(Instant.now().getEpochSecond());
         targetPost.setPublished(true);
-        return true;
+        return postRepository.save(targetPost);
     }
 }

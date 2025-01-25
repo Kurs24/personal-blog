@@ -5,8 +5,6 @@ import com.farhan.blog.service.PostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
 @RequiredArgsConstructor
 public class PostController {
@@ -14,7 +12,7 @@ public class PostController {
     private final PostService postService;
 
     @GetMapping("/")
-    public List<Post> getPosts() {
+    public Iterable<Post> getPosts() {
         return postService.getPosts();
     }
 
@@ -28,9 +26,14 @@ public class PostController {
         return postService.createPost(post);
     }
 
-    @PutMapping("/{id}")
-    public boolean updatePost(@PathVariable Integer id, @RequestBody Post post) {
-        return postService.updatePost(id, post.getTitle(), post.getSlug());
+    @PutMapping("/{slug}")
+    public boolean updatePost(@PathVariable String slug, @RequestBody Post post) {
+        return postService.updatePost(slug, post);
+    }
+
+    @PutMapping("/publish/{id}")
+    public Post publishPost(@PathVariable Integer id) {
+        return postService.publishPost(id);
     }
 
     @DeleteMapping("/{id}")

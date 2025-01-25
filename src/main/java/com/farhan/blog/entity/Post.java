@@ -1,17 +1,16 @@
 package com.farhan.blog.entity;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import lombok.Data;
 
-import java.util.Date;
-
 @Data
+@Entity
 public class Post {
-    public Post(Integer id, String slug, String title) {
-        this.id = id;
-        this.slug = slug;
-        this.title = title;
-    }
-
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String title;
     private String body;
@@ -19,7 +18,7 @@ public class Post {
     private boolean isPublished;
     private boolean isDeleted;
     private Integer categoryId;
-    private Date createdAt;
-    private Date updatedAt;
-    private Date publishedAt;
+    private Long createdAt;
+    private Long updatedAt;
+    private Long publishedAt;
 }
