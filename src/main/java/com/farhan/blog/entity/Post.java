@@ -17,7 +17,6 @@ public class Post {
     private String slug;
     private boolean isPublished;
     private boolean isDeleted;
-    private Integer categoryId;
     private Long createdAt;
     private Long updatedAt;
     private Long publishedAt;

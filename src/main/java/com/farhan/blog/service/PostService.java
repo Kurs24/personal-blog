@@ -18,7 +18,7 @@ public class PostService {
     }
 
     public Post getPostBySlug(String slug) {
-        return postRepository.findBySlug(slug).orElse(null);
+        return postRepository.findFirstBySlugAndIsDeleted(slug, false).orElse(null);
     }
 
     public Post createPost(Post post) {
@@ -27,7 +27,7 @@ public class PostService {
     }
 
     public boolean updatePost(String slug, Post updatedPostByUser) {
-        Post targetPost = postRepository.findBySlug(slug).orElse(null);
+        Post targetPost = postRepository.findFirstBySlugAndIsDeleted(slug, false).orElse(null);
         if (targetPost == null) {
             return false;
         }
@@ -41,7 +41,8 @@ public class PostService {
         if (targetPost == null) {
             return false;
         }
-        postRepository.deleteById(targetPost.getId());
+        targetPost.setDeleted(true);
+        postRepository.save(targetPost);
         return true;
     }
 

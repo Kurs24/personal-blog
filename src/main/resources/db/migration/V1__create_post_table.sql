@@ -3,10 +3,9 @@ CREATE TABLE post (
     title VARCHAR(255),
     body VARCHAR(255),
     slug VARCHAR(255),
-    isPublished BOOLEAN,
-    isDeleted BOOLEAN,
-    categoryId INT,
-    createdAt BIGINT,
-    updatedAt BIGINT,
-    publishedAt BIGINT
+    is_published BOOLEAN,
+    is_deleted BOOLEAN,
+    created_at BIGINT,
+    updated_at BIGINT,
+    published_at BIGINT
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
