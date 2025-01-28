@@ -1,10 +1,10 @@
 package com.farhan.blog.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
 import lombok.Data;
+
+import java.util.List;
 
 @Data
 @Entity
@@ -14,10 +14,19 @@ public class Post {
     private Integer id;
     private String title;
     private String body;
+
+    @Column(unique = true)
     private String slug;
+
     private boolean isPublished;
     private boolean isDeleted;
     private Long createdAt;
     private Long updatedAt;
     private Long publishedAt;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "post", orphanRemoval = true)
+    @JsonIgnore
+    private List<Comment> comments;
+
+    private Long commentCount;
 }
