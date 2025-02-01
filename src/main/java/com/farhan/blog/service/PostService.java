@@ -1,11 +1,17 @@
 package com.farhan.blog.service;
 
 import com.farhan.blog.entity.Post;
+import com.farhan.blog.exception.ApiException;
+import com.farhan.blog.mapper.PostMapper;
 import com.farhan.blog.repository.PostRepository;
+import com.farhan.blog.response.post.GetPostResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -13,12 +19,19 @@ public class PostService {
 
     private final PostRepository postRepository;
 
-    public Iterable<Post> getPosts() {
-        return postRepository.findAll();
+    public Iterable<GetPostResponse> getPosts() {
+        Iterable<Post> foundPosts = postRepository.findAllByIsDeleted(false)
+                .orElseThrow(() -> new ApiException("Posts not found", HttpStatus.NOT_FOUND));
+        List<GetPostResponse> response = new ArrayList<>();
+        foundPosts.forEach(post -> response.add(PostMapper.INSTANCE.mapToPostResponse(post)));
+        return response;
     }
 
-    public Post getPostBySlug(String slug) {
-        return postRepository.findFirstBySlugAndIsDeleted(slug, false).orElse(null);
+    public GetPostResponse getPostBySlug(String slug) {
+        Post foundPost = postRepository.findFirstBySlugAndIsDeleted(slug, false)
+                .orElseThrow(
+                        () -> new ApiException("Post not found", HttpStatus.NOT_FOUND));
+        return PostMapper.INSTANCE.mapToPostResponse(foundPost);
     }
 
     public Post createPost(Post post) {

@@ -1,6 +1,7 @@
 package com.farhan.blog.controller;
 
 import com.farhan.blog.entity.Post;
+import com.farhan.blog.response.post.GetPostResponse;
 import com.farhan.blog.service.PostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -13,12 +14,12 @@ public class PostController {
     private final PostService postService;
 
     @GetMapping
-    public Iterable<Post> getPosts() {
+    public Iterable<GetPostResponse> getPosts() {
         return postService.getPosts();
     }
 
     @GetMapping("/{slugs}")
-    public Post getPosts(@PathVariable String slugs) {
+    public GetPostResponse getPosts(@PathVariable String slugs) {
         return postService.getPostBySlug(slugs);
     }
 
