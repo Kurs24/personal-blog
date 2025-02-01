@@ -1,8 +1,10 @@
 package com.farhan.blog.controller;
 
 import com.farhan.blog.entity.Post;
-import com.farhan.blog.response.post.GetPostResponse;
+import com.farhan.blog.request.post.CreatePostRequest;
+import com.farhan.blog.response.post.*;
 import com.farhan.blog.service.PostService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,22 +26,23 @@ public class PostController {
     }
 
     @PostMapping
-    public Post createPost(@RequestBody Post post) {
+    public CreatePostResponse createPost(@Valid @RequestBody CreatePostRequest post) {
         return postService.createPost(post);
     }
 
     @PutMapping("/{slug}")
-    public boolean updatePost(@PathVariable String slug, @RequestBody Post post) {
+    public UpdatePostResponse updatePost(@PathVariable String slug,
+                                         @Valid @RequestBody CreatePostRequest post) {
         return postService.updatePost(slug, post);
     }
 
     @PutMapping("/publish/{id}")
-    public Post publishPost(@PathVariable Integer id) {
+    public PublishPostResponse publishPost(@PathVariable Integer id) {
         return postService.publishPost(id);
     }
 
     @DeleteMapping("/{id}")
-    public boolean deletePost(@PathVariable Integer id) {
+    public DeletePostResponse deletePost(@PathVariable Integer id) {
         return postService.deletePost(id);
     }
 }

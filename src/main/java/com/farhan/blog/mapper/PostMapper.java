@@ -1,7 +1,10 @@
 package com.farhan.blog.mapper;
 
 import com.farhan.blog.entity.Post;
+import com.farhan.blog.request.post.CreatePostRequest;
+import com.farhan.blog.response.post.CreatePostResponse;
 import com.farhan.blog.response.post.GetPostResponse;
+import com.farhan.blog.response.post.UpdatePostResponse;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
@@ -9,5 +12,8 @@ import org.mapstruct.factory.Mappers;
 public interface PostMapper {
     PostMapper INSTANCE = Mappers.getMapper(PostMapper.class);
 
-    GetPostResponse mapToPostResponse(Post post);
+    GetPostResponse mapToGetPostResponse(Post post);
+    Post mapToPost(CreatePostRequest createPostRequest);
+    CreatePostResponse mapToCreatePostResponse(Post post);
+    UpdatePostResponse mapToUpdatePostResponse(Post post);
 }
