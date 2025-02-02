@@ -1,5 +1,6 @@
 package com.farhan.blog.request.comment;
 
+import com.farhan.blog.entity.Post;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -17,4 +18,6 @@ public class CreateCommentRequest {
     @NotBlank
     @Size(min = 1, message = "Body must be at least 1 character")
     private String body;
+
+    private Post post;
 }

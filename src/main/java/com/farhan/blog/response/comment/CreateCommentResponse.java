@@ -7,8 +7,7 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class GetCommentResponse {
-    private Integer id;
+public class CreateCommentResponse {
     private String name;
     private String email;
     private String body;

@@ -25,7 +25,6 @@ public class Post {
     private Long publishedAt;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "post", orphanRemoval = true)
-    @JsonIgnore
     private List<Comment> comments;
 
     private Long commentCount;

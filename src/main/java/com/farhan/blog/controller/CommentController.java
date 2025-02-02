@@ -1,7 +1,11 @@
 package com.farhan.blog.controller;
 
-import com.farhan.blog.entity.Comment;
+import com.farhan.blog.request.comment.CreateCommentRequest;
+import com.farhan.blog.response.comment.CreateCommentResponse;
+import com.farhan.blog.response.comment.DeleteCommentResponse;
+import com.farhan.blog.response.comment.GetCommentResponse;
 import com.farhan.blog.service.CommentService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,24 +17,24 @@ public class CommentController {
     private final CommentService commentService;
 
     @GetMapping
-    public Iterable<Comment> getComments(@RequestParam(required = false) String postSlug,
-                                         @RequestParam(required = false) Integer pageNo,
-                                         @RequestParam(required = false) Integer limit) {
+    public Iterable<GetCommentResponse> getComments(@RequestParam(required = false) String postSlug,
+                                         @RequestParam(required = false, defaultValue = "0" ) Integer pageNo,
+                                         @RequestParam(required = false, defaultValue = "5") Integer limit) {
         return commentService.getComments(postSlug, pageNo, limit);
     }
 
     @GetMapping("/{id}")
-    public Comment getComment(@PathVariable Integer id) {
+    public GetCommentResponse getComment(@PathVariable Integer id) {
         return commentService.getComment(id);
     }
 
     @PostMapping
-    public Comment createComment(@RequestBody Comment comment) {
+    public CreateCommentResponse createComment(@RequestBody @Valid CreateCommentRequest comment) {
         return commentService.createComment(comment);
     }
 
     @DeleteMapping("/{id}")
-    public boolean deleteComment(@PathVariable Integer id) {
+    public DeleteCommentResponse deleteComment(@PathVariable Integer id) {
         return commentService.deleteComment(id);
     }
 }
